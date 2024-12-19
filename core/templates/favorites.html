@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}My Favorites{% endblock title %}
+{% block content %}
+<h1>My Favorite Stocks</h1>
+<ul>
+    {% for stock in favorites %}
+    <li>
+        <a href="{% url 'stock_detail' stock.pk %}">{{ stock.symbol }}</a> - {{ stock.price }}
+    </li>
+    {% endfor %}
+    {% if not favorites %}
+        <p>You have no favorite stocks yet.</p>
+    {% endif %}
+</ul>
+{% endblock content %}

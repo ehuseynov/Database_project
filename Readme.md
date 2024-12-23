@@ -6,3 +6,5 @@ To run server these commands should run simultaneusly:
 	python manage.py update_currencies
 	python manage.py update_prices
 	python manage.py runserver  
+
+Moreover, do not forget to edit database from stockviewer/settings.py

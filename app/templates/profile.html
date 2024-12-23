@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>My Profile</h2>
+
+<!-- Profile Update Form -->
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="update_profile" value="1">
+
+  <p><strong>Username:</strong> {{ user.username }}</p>
+
+  <label for="id_name">Name:</label>
+  <input type="text" name="name" id="id_name" value="{{ user.name }}" required>
+  <br><br>
+
+  <label for="id_mail">Email:</label>
+  <input type="email" name="mail" id="id_mail" value="{{ user.mail }}" required>
+  <br><br>
+
+  <label for="id_password">New Password (leave blank to keep current):</label>
+  <input type="password" name="password" id="id_password">
+  <br><br>
+
+  <button type="submit">Save</button>
+</form>
+
+<hr>
+
+<!-- Favorites Section -->
+<h3>My Favorite Stocks</h3>
+{% if favorites %}
+  <ul>
+    {% for stock in favorites %}
+      <li>{{ stock.1 }} - {{ stock.2 }} (ID: {{ stock.0 }})</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>You have no favorite stocks.</p>
+{% endif %}
+
+<!-- Form to Add a Favorite Stock -->
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="add_favorite" value="1">
+
+  <label for="stock_id">Add a stock to favorites:</label>
+  <select name="stock_id" id="stock_id">
+    {% for st in all_stocks %}
+      <option value="{{ st.0 }}">{{ st.1 }} - {{ st.2 }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Add Favorite</button>
+</form>
+
+{% endblock %}

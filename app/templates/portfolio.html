@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>My Portfolio</h1>
+
+<!-- 1) Buy Stock Form -->
+<h2>Buy Stock</h2>
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="buy_stock" value="1">
+
+  <label for="id_stock">Select Stock to Buy:</label>
+  <select name="stock_id" id="id_stock" required>
+    <option value="">--Select--</option>
+    {% for st in all_stocks %}
+      <option value="{{ st.0 }}">{{ st.1 }}</option>
+    {% endfor %}
+  </select>
+  <br><br>
+
+  <label for="id_quantity">Quantity:</label>
+  <input type="number" name="quantity" id="id_quantity" min="1" required>
+  <br><br>
+
+  <label for="id_buy_price">Buy Price (TRY):</label>
+  <input type="number" step="0.01" name="buy_price" id="id_buy_price" required>
+  <br><br>
+
+  <button type="submit">Buy</button>
+</form>
+
+<hr>
+
+<!-- 2) Sell Stock Form -->
+<h2>Sell Stock</h2>
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="sell_stock" value="1">
+
+  <label for="sell_stock_id">Select Stock to Sell:</label>
+  <select name="sell_stock_id" id="sell_stock_id" required>
+    <option value="">--Select--</option>
+    {% for st in sellable_stocks %}
+      <option value="{{ st.0 }}">{{ st.1 }}</option>
+    {% endfor %}
+  </select>
+  <br><br>
+
+  <label for="sell_quantity">Quantity to Sell:</label>
+  <input type="number" name="sell_quantity" id="sell_quantity" min="1" required>
+  <br><br>
+
+  <button type="submit">Sell</button>
+</form>
+
+<hr>
+
+<!-- 3) Portfolio Table -->
+<h2>Your Portfolio</h2>
+{% if portfolio_data %}
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Buy Price (each)</th>
+        <th>Current Price (each)</th>
+        <th>Row Cost</th>
+        <th>Row Value</th>
+        <th>Gain/Loss</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in portfolio_data %}
+      <tr>
+        <td>{{ item.symbol }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.bought_price }}</td>
+        <td>{{ item.current_price }}</td>
+        <td>{{ item.row_cost }}</td>
+        <td>{{ item.row_value }}</td>
+        <td>{{ item.row_gain }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Totals -->
+  <h3>Portfolio Totals</h3>
+  <p>Total Cost: {{ total_cost }} TRY</p>
+  <p>Total Value: {{ total_value }} TRY</p>
+  <p>Total Gain: {{ total_gain }} TRY</p>
+{% else %}
+  <p>You have no stocks in your portfolio.</p>
+{% endif %}
+{% endblock %}

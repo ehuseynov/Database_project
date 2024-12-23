@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Home</h1>
+<h2>Currencies:</h2>
+<ul>
+    {% for c in currencies %}
+      <li>{{ c.0 }}: {{ c.1 }} TRY</li>
+    {% endfor %}
+</ul>
+
+<h2>Top 5 Stocks:</h2>
+<ul>
+    {% for s in stocks %}
+      <li>{{ s.1 }} ({{ s.0 }}): {{ s.2 }} TRY</li>
+    {% endfor %}
+</ul>
+
+{% if request.session.user_id %}
+  <h2>Favorite Stocks:</h2>
+  {% if favorites %}
+    <ul>
+      {% for fav in favorites %}
+        <li>{{ fav.1 }} ({{ fav.0 }}): {{ fav.2 }} TRY</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You have no favorite stocks.</p>
+  {% endif %}
+{% endif %}
+{% endblock %}

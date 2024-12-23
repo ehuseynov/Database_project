@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stock Viewer</title>
+<link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+</head>
+<body>
+<nav>
+  <a href="{% url 'home' %}">Home</a>
+  {% if request.session.user_id %}
+    <a href="{% url 'portfolio' %}">Portfolio</a>
+    <a href="{% url 'profile' %}">Profile</a>
+    <a href="{% url 'logout' %}">Logout</a>
+  {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'signup' %}">Sign Up</a>
+  {% endif %}
+</nav>
+<hr>
+{% block content %}{% endblock %}
+</body>
+</html>

@@ -10,18 +10,24 @@ body {
 nav {
     background-color: #2c3e50;
     padding: 1em;
+    display: flex;
+    justify-content: space-between; /* space-between so left nav and right nav are at ends */
+    align-items: center;
 }
 
-nav a {
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.nav-greeting {
     color: #fff;
-    margin-right: 1em;
-    text-decoration: none;
     font-weight: bold;
+    margin-right: 1em;
 }
 
-nav a:hover {
-    text-decoration: underline;
-}
 
 /* Page containers */
 h1, h2, h3 {
@@ -104,3 +110,18 @@ footer {
     font-size: 0.9em;
     color: #777;
 }
+
+/* Additional optional styles */
+.home-section, .profile-section, .portfolio-form, .portfolio-table {
+    margin-bottom: 2em;
+}
+
+.stock-finder-form {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+

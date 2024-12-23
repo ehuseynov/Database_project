@@ -2,9 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Stock Viewer</title>
-<link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+  <meta charset="UTF-8">
+  <title>Stock Viewer</title>
+  <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+  <!-- Optional: Additional JS for auto-refresh, if you want real-time data updates -->
+  <script src="{% static 'app/js/auto_refresh.js' %}"></script>
 </head>
 <body>
 <nav>
@@ -19,7 +21,13 @@
     <a href="{% url 'signup' %}">Sign Up</a>
   {% endif %}
 </nav>
-<hr>
-{% block content %}{% endblock %}
+<div class="container">
+  {% block content %}{% endblock %}
+</div>
+
+<footer>
+  <p>© 2024 Stock Market Viewer</p>
+</footer>
+
 </body>
 </html>

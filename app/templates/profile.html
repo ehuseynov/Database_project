@@ -1,99 +1,102 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>My Profile</h2>
+<h1>My Profile</h1>
 
 <!-- Profile Update Form -->
-<form method="POST">
-  {% csrf_token %}
-  <input type="hidden" name="update_profile" value="1">
+<section class="profile-section">
+  <h2>Update Profile</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="update_profile" value="1">
 
-  <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Username:</strong> {{ user.username }}</p>
 
-  <label for="id_name">Name:</label>
-  <input type="text" name="name" id="id_name" value="{{ user.name }}" required>
-  <br><br>
+    <label for="id_name">Name:</label>
+    <input type="text" name="name" id="id_name" value="{{ user.name }}" required>
 
-  <label for="id_mail">Email:</label>
-  <input type="email" name="mail" id="id_mail" value="{{ user.mail }}" required>
-  <br><br>
+    <label for="id_mail">Email:</label>
+    <input type="email" name="mail" id="id_mail" value="{{ user.mail }}" required>
 
-  <label for="id_password">New Password (leave blank to keep current):</label>
-  <input type="password" name="password" id="id_password">
-  <br><br>
+    <label for="id_password">New Password (leave blank to keep current):</label>
+    <input type="password" name="password" id="id_password">
 
-  <button type="submit">Save Profile</button>
-</form>
+    <button type="submit">Save Profile</button>
+  </form>
+</section>
 
 <hr>
 
 <!-- Favorite Stocks Section -->
-<h3>My Favorite Stocks</h3>
-{% if favorites %}
-  <ul>
-    {% for fs in favorites %}
-      <li>
-        {{ fs.2 }} ({{ fs.1 }})
-        <!-- Remove button/form for each stock -->
-        <form method="POST" style="display:inline;">
-          {% csrf_token %}
-          <input type="hidden" name="remove_favorite_stock" value="1">
-          <input type="hidden" name="remove_stock_id" value="{{ fs.0 }}">
-          <button type="submit">Remove</button>
-        </form>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No favorite stocks yet.</p>
-{% endif %}
+<section class="profile-section">
+  <h2>My Favorite Stocks</h2>
+  {% if favorites %}
+    <ul>
+      {% for fs in favorites %}
+        <li>
+          <strong>{{ fs.2 }}</strong> ({{ fs.1 }})
+          <!-- Remove button -->
+          <form method="POST" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="remove_favorite_stock" value="1">
+            <input type="hidden" name="remove_stock_id" value="{{ fs.0 }}">
+            <button type="submit" style="margin-left:10px;">Remove</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No favorite stocks yet.</p>
+  {% endif %}
 
-<!-- Add Favorite Stock -->
-<form method="POST">
-  {% csrf_token %}
-  <input type="hidden" name="add_favorite_stock" value="1">
-  <label for="stock_id">Add a Stock to Favorites:</label>
-  <select name="stock_id" id="stock_id">
-    {% for st in all_stocks %}
-      <option value="{{ st.0 }}">{{ st.2 }} ({{ st.1 }})</option>
-    {% endfor %}
-  </select>
-  <button type="submit">Add Stock</button>
-</form>
+  <!-- Add Favorite Stock -->
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="add_favorite_stock" value="1">
+    <label for="stock_id">Add a Stock to Favorites:</label>
+    <select name="stock_id" id="stock_id" required>
+      {% for st in all_stocks %}
+        <option value="{{ st.0 }}">{{ st.2 }} ({{ st.1 }})</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Add Stock</button>
+  </form>
+</section>
 
 <hr>
 
 <!-- Favorite Currencies Section -->
-<h3>My Favorite Currencies</h3>
-{% if favorite_currencies %}
-  <ul>
-    {% for fc in favorite_currencies %}
-      <li>
-        {{ fc.1 }} ({{ fc.0 }}) | Buy: {{ fc.2 }} Sell: {{ fc.3 }}
-        <!-- Remove button/form -->
-        <form method="POST" style="display:inline;">
-          {% csrf_token %}
-          <input type="hidden" name="remove_favorite_currency" value="1">
-          <input type="hidden" name="remove_currency_code" value="{{ fc.0 }}">
-          <button type="submit">Remove</button>
-        </form>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No favorite currencies yet.</p>
-{% endif %}
+<section class="profile-section">
+  <h2>My Favorite Currencies</h2>
+  {% if favorite_currencies %}
+    <ul>
+      {% for fc in favorite_currencies %}
+        <li>
+          <strong>{{ fc.1 }}</strong> ({{ fc.0 }})
+          Buy: {{ fc.2 }} Sell: {{ fc.3 }}
+          <form method="POST" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="remove_favorite_currency" value="1">
+            <input type="hidden" name="remove_currency_code" value="{{ fc.0 }}">
+            <button type="submit" style="margin-left:10px;">Remove</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No favorite currencies yet.</p>
+  {% endif %}
 
-<!-- Add Favorite Currency -->
-<form method="POST">
-  {% csrf_token %}
-  <input type="hidden" name="add_favorite_currency" value="1">
-  <label for="currency_code">Add a Currency to Favorites:</label>
-  <select name="currency_code" id="currency_code">
-    {% for cur in all_currencies %}
-      <option value="{{ cur.0 }}">{{ cur.1 }} ({{ cur.0 }})</option>
-    {% endfor %}
-  </select>
-  <button type="submit">Add Currency</button>
-</form>
-
+  <!-- Add Favorite Currency -->
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="add_favorite_currency" value="1">
+    <label for="currency_code">Add a Currency to Favorites:</label>
+    <select name="currency_code" id="currency_code" required>
+      {% for cur in all_currencies %}
+        <option value="{{ cur.0 }}">{{ cur.1 }} ({{ cur.0 }})</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Add Currency</button>
+  </form>
+</section>
 {% endblock %}

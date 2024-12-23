@@ -75,11 +75,11 @@ WSGI_APPLICATION = "stock_viewer.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'emilhuseynov',  # Replace with your database name
-        'USER': 'emilhuseynov',       # Replace with your database username
-        'PASSWORD': 'ayaa',   # Replace with your database password
-        'HOST': 'localhost',
-        'PORT': '5436',
+        'NAME': '',  # Replace with your database name
+        'USER': '',       # Replace with your database username
+        'PASSWORD': '',   # Replace with your database password
+        'HOST': '',
+        'PORT': '5432', #Replace with your port
     }
 }
 

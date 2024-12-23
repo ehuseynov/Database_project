@@ -1,59 +1,69 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <h1>Stock Finder</h1>
 
-<!-- Filter Form (GET request) -->
-<form method="GET">
-  <label for="id_field_work">Field of Work:</label>
-  <select name="field_of_work" id="id_field_work">
-    <option value="">--All--</option>
-    {% for fw in field_of_work_options %}
-      <option value="{{ fw }}" {% if fw == selected_field %}selected{% endif %}>{{ fw }}</option>
-    {% endfor %}
-  </select>
-  <br><br>
+<form method="GET" class="stock-finder-form">
+  <div class="form-group">
+    <label for="id_field_work">Field of Work:</label>
+    <select name="field_of_work" id="id_field_work">
+      <option value="">--All--</option>
+      {% for fw in field_of_work_options %}
+        <option value="{{ fw }}" {% if fw == selected_field %}selected{% endif %}>{{ fw }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-  <label for="id_min_value">Min Value of Company (price * number_of_shares):</label>
-  <input type="number" name="min_value" id="id_min_value" value="{{ min_value }}" placeholder="5000000">
-  <br><br>
+  <br>
 
-  <label for="id_sort_by">Sort By:</label>
-  <select name="sort_by" id="id_sort_by">
-    <option value="">--No Sorting--</option>
-    <option value="value_of_company" {% if sort_by == 'value_of_company' %}selected{% endif %}>Value of Company</option>
-    <option value="last_5_years_gain" {% if sort_by == 'last_5_years_gain' %}selected{% endif %}>Last 5 Years Gain</option>
-    <option value="last_52_weeks_high" {% if sort_by == 'last_52_weeks_high' %}selected{% endif %}>Last 52 Weeks High</option>
-  </select>
-  <br><br>
+  <div class="form-group">
+    <label for="id_min_value">Min Value of Company:</label>
+    <input type="number" name="min_value" id="id_min_value" value="{{ min_value }}" placeholder="5000000">
+  </div>
 
-  <label>Order:</label>
-  <input type="radio" name="order" value="asc" {% if order == "asc" %}checked{% endif %}> ASC
-  <input type="radio" name="order" value="desc" {% if order == "desc" %}checked{% endif %}> DESC
-  <br><br>
+  <br>
 
-  <button type="submit">Filter / Sort</button>
+  <div class="form-group">
+    <label for="id_sort_by">Sort By:</label>
+    <select name="sort_by" id="id_sort_by">
+      <option value="">--No Sorting--</option>
+      <option value="value_of_company" {% if sort_by == 'value_of_company' %}selected{% endif %}>Value of Company</option>
+      <option value="last_5_years_gain" {% if sort_by == 'last_5_years_gain' %}selected{% endif %}>Last 5 Years Gain</option>
+      <option value="last_52_weeks_high" {% if sort_by == 'last_52_weeks_high' %}selected{% endif %}>Last 52 Weeks High</option>
+    </select>
+  </div>
+
+  <br>
+  
+  <div class="form-group">
+    <label>Order:</label>
+    <label><input type="radio" name="order" value="asc" {% if order == "asc" %}checked{% endif %}> ASC</label>
+    <label><input type="radio" name="order" value="desc" {% if order == "desc" %}checked{% endif %}> DESC</label>
+  </div>
+  <br>
+  <div class="form-group">
+    <button type="submit" class="btn-primary">Filter / Sort</button>
+  </div>
 </form>
 
 <hr>
 
 <!-- Display Stocks Table -->
 {% if stocks %}
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Symbol</th>
-        <th>Name</th>
-        <th>Field of Work</th>
-        <th>Price</th>
-        <th>Number of Shares</th>
-        <th>Last 5 Years Gain</th>
-        <th>Last 52 Weeks High</th>
-        <th>Value of Company</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for stock in stocks %}
+<table class="modern-table">
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Name</th>
+      <th>Field of Work</th>
+      <th>Price</th>
+      <th>Number of Shares</th>
+      <th>Last 5 Years Gain</th>
+      <th>Last 52 Weeks High</th>
+      <th>Value of Company</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for stock in stocks %}
       <tr>
         <td>{{ stock.1 }}</td>  {# symbol #}
         <td>{{ stock.2 }}</td>  {# name #}
@@ -62,12 +72,13 @@
         <td>{{ stock.5 }}</td>  {# number_of_shares #}
         <td>{{ stock.6 }}</td>  {# last_5_years_gain #}
         <td>{{ stock.7 }}</td>  {# last_52_weeks_high #}
-        <td>{{ stock.8 }}</td>  {# value_of_company (alias for price*number_of_shares) #}
+        <td>{{ stock.8 }}</td>  {# value_of_company (alias) #}
       </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    {% endfor %}
+  </tbody>
+</table>
 {% else %}
-  <p>No stocks found for the given criteria.</p>
+<p>No stocks found for the given criteria.</p>
 {% endif %}
+
 {% endblock %}

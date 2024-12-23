@@ -1,42 +1,58 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <h1>Home</h1>
 
+<!-- If you'd like auto-refresh, uncomment this script call -->
+<!-- <script>enableAutoRefresh(30);</script> -->
+
 <!-- Show top stocks -->
-<h2>Top 5 Stocks by Market Value</h2>
-<ul>
-  {% for stk in stocks %}
-    <li>{{ stk.1 }} ({{ stk.0 }}) — Price: {{ stk.2 }}</li>
-  {% endfor %}
-</ul>
+<section class="home-section">
+  <h2>Top 5 Stocks by Market Value</h2>
+  <ul>
+    {% for stk in stocks %}
+      <li>
+        <strong>{{ stk.1 }}</strong> ({{ stk.0 }})  
+        <span>Price: {{ stk.2 }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
 
 {% if request.session.user_id %}
   <!-- Show user's favorite stocks -->
-  <h2>My Favorite Stocks</h2>
-  {% if favorites %}
-    <ul>
-      {% for f in favorites %}
-      <li>{{ f.1 }} ({{ f.0 }}) - Price: {{ f.2 }}</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>You have no favorite stocks.</p>
-  {% endif %}
+  <section class="home-section">
+    <h2>My Favorite Stocks</h2>
+    {% if favorites %}
+      <ul>
+        {% for f in favorites %}
+          <li>
+            <strong>{{ f.1 }}</strong> ({{ f.0 }})  
+            <span>Price: {{ f.2 }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>You have no favorite stocks.</p>
+    {% endif %}
+  </section>
 
   <!-- Show user's favorite currencies -->
-  <h2>My Favorite Currencies</h2>
-  {% if favorite_currencies %}
-    <ul>
-      {% for fc in favorite_currencies %}
-        <li>{{ fc.1 }} ({{ fc.0 }}) Buy: {{ fc.2 }} Sell: {{ fc.3 }}</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>You have no favorite currencies.</p>
-  {% endif %}
+  <section class="home-section">
+    <h2>My Favorite Currencies</h2>
+    {% if favorite_currencies %}
+      <ul>
+        {% for fc in favorite_currencies %}
+          <li>
+            <strong>{{ fc.1 }}</strong> ({{ fc.0 }})
+            <span>Buy: {{ fc.2 }} | Sell: {{ fc.3 }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>You have no favorite currencies.</p>
+    {% endif %}
+  </section>
 {% else %}
   <p>Please <a href="{% url 'login' %}">log in</a> to see your favorites.</p>
 {% endif %}
-
 {% endblock %}

@@ -23,8 +23,8 @@ CREATE TABLE stocks (
     name VARCHAR(255),
     price NUMERIC(10,2),
     field_of_work VARCHAR(255),
-    volume NUMERIC(15,2),
-    last_5_years_gain NUMERIC(5,2),
+    number_of_shares NUMERIC(15,2),
+    last_5_years_gain NUMERIC(10,2),
     last_52_weeks_high NUMERIC(10,2)
 );
 
@@ -54,16 +54,25 @@ CREATE TABLE portfolio (
 CREATE TABLE currency (
     currency_code VARCHAR(10) PRIMARY KEY,
     currency_name VARCHAR(255),
-    exchange_rate_to_turkish_lira NUMERIC(10,4),
+    buy_rate NUMERIC(10,4),                        
+    sell_rate NUMERIC(10,4),    
     updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Favorite currency table
+CREATE TABLE Favorite_currency (
+	favorite_currency_id SERIAL PRIMARY KEY,
+	user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+	currency_code VARCHAR(10) NOT NULL REFERENCES currency(currency_code) ON DELETE CASCADE,
+	updated_at TIMESTAMP DEFAULT NOW()
 );
 
 
 
-\COPY stocks(symbol, name, field_of_work) FROM 'app/sql/bist100.csv' DELIMITER ',' CSV HEADER;
+
+\COPY stocks(symbol, name, field_of_work, number_of_shares,last_5_years_gain,last_52_weeks_high) FROM 'app/sql/bist100.csv' DELIMITER ',' CSV HEADER;
 
 
 
-\COPY currency(currency_code, currency_name) FROM 'app/sql/currency.csv' DELIMITER ',' CSV HEADER;
 
 

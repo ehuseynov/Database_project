@@ -1,6 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
-
 {% block content %}
 <h2>My Profile</h2>
 
@@ -23,35 +21,79 @@
   <input type="password" name="password" id="id_password">
   <br><br>
 
-  <button type="submit">Save</button>
+  <button type="submit">Save Profile</button>
 </form>
 
 <hr>
 
-<!-- Favorites Section -->
+<!-- Favorite Stocks Section -->
 <h3>My Favorite Stocks</h3>
 {% if favorites %}
   <ul>
-    {% for stock in favorites %}
-      <li>{{ stock.1 }} - {{ stock.2 }} (ID: {{ stock.0 }})</li>
+    {% for fs in favorites %}
+      <li>
+        {{ fs.2 }} ({{ fs.1 }})
+        <!-- Remove button/form for each stock -->
+        <form method="POST" style="display:inline;">
+          {% csrf_token %}
+          <input type="hidden" name="remove_favorite_stock" value="1">
+          <input type="hidden" name="remove_stock_id" value="{{ fs.0 }}">
+          <button type="submit">Remove</button>
+        </form>
+      </li>
     {% endfor %}
   </ul>
 {% else %}
-  <p>You have no favorite stocks.</p>
+  <p>No favorite stocks yet.</p>
 {% endif %}
 
-<!-- Form to Add a Favorite Stock -->
+<!-- Add Favorite Stock -->
 <form method="POST">
   {% csrf_token %}
-  <input type="hidden" name="add_favorite" value="1">
-
-  <label for="stock_id">Add a stock to favorites:</label>
+  <input type="hidden" name="add_favorite_stock" value="1">
+  <label for="stock_id">Add a Stock to Favorites:</label>
   <select name="stock_id" id="stock_id">
     {% for st in all_stocks %}
-      <option value="{{ st.0 }}">{{ st.1 }} - {{ st.2 }}</option>
+      <option value="{{ st.0 }}">{{ st.2 }} ({{ st.1 }})</option>
     {% endfor %}
   </select>
-  <button type="submit">Add Favorite</button>
+  <button type="submit">Add Stock</button>
+</form>
+
+<hr>
+
+<!-- Favorite Currencies Section -->
+<h3>My Favorite Currencies</h3>
+{% if favorite_currencies %}
+  <ul>
+    {% for fc in favorite_currencies %}
+      <li>
+        {{ fc.1 }} ({{ fc.0 }}) | Buy: {{ fc.2 }} Sell: {{ fc.3 }}
+        <!-- Remove button/form -->
+        <form method="POST" style="display:inline;">
+          {% csrf_token %}
+          <input type="hidden" name="remove_favorite_currency" value="1">
+          <input type="hidden" name="remove_currency_code" value="{{ fc.0 }}">
+          <button type="submit">Remove</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No favorite currencies yet.</p>
+{% endif %}
+
+<!-- Add Favorite Currency -->
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="add_favorite_currency" value="1">
+  <label for="currency_code">Add a Currency to Favorites:</label>
+  <select name="currency_code" id="currency_code">
+    {% for cur in all_currencies %}
+      <option value="{{ cur.0 }}">{{ cur.1 }} ({{ cur.0 }})</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Add Currency</button>
 </form>
 
 {% endblock %}

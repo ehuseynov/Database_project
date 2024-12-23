@@ -1,31 +1,42 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h1>Home</h1>
-<h2>Currencies:</h2>
-<ul>
-    {% for c in currencies %}
-      <li>{{ c.0 }}: {{ c.1 }} TRY</li>
-    {% endfor %}
-</ul>
 
-<h2>Top 5 Stocks:</h2>
+<h1>Home</h1>
+
+<!-- Show top stocks -->
+<h2>Top 5 Stocks by Market Value</h2>
 <ul>
-    {% for s in stocks %}
-      <li>{{ s.1 }} ({{ s.0 }}): {{ s.2 }} TRY</li>
-    {% endfor %}
+  {% for stk in stocks %}
+    <li>{{ stk.1 }} ({{ stk.0 }}) — Price: {{ stk.2 }}</li>
+  {% endfor %}
 </ul>
 
 {% if request.session.user_id %}
-  <h2>Favorite Stocks:</h2>
+  <!-- Show user's favorite stocks -->
+  <h2>My Favorite Stocks</h2>
   {% if favorites %}
     <ul>
-      {% for fav in favorites %}
-        <li>{{ fav.1 }} ({{ fav.0 }}): {{ fav.2 }} TRY</li>
+      {% for f in favorites %}
+      <li>{{ f.1 }} ({{ f.0 }}) - Price: {{ f.2 }}</li>
       {% endfor %}
     </ul>
   {% else %}
     <p>You have no favorite stocks.</p>
   {% endif %}
+
+  <!-- Show user's favorite currencies -->
+  <h2>My Favorite Currencies</h2>
+  {% if favorite_currencies %}
+    <ul>
+      {% for fc in favorite_currencies %}
+        <li>{{ fc.1 }} ({{ fc.0 }}) Buy: {{ fc.2 }} Sell: {{ fc.3 }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You have no favorite currencies.</p>
+  {% endif %}
+{% else %}
+  <p>Please <a href="{% url 'login' %}">log in</a> to see your favorites.</p>
 {% endif %}
+
 {% endblock %}

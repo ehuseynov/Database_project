@@ -3,6 +3,7 @@ from app.views.home_views import home_view
 from app.views.auth_views import login_view, logout_view, signup_view
 from app.views.profile_views import profile_view
 from app.views.portfolio_views import portfolio_view
+from app.views.stock_finder import stock_finder_view
 
 urlpatterns = [
     path('', home_view, name='home'),
@@ -11,4 +12,6 @@ urlpatterns = [
     path('signup/', signup_view, name='signup'),
     path('profile/', profile_view, name='profile'),
     path('portfolio/', portfolio_view, name='portfolio'),
+    path('stock_finder/', stock_finder_view, name='stock_finder'),
+
 ]
